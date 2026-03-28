@@ -9,6 +9,7 @@ import (
 type Player struct {
 	Pos rl.Vector3
 	Vel rl.Vector3
+	EnvVel rl.Vector3
 	LegLimitL rl.Vector2
 	LegLimitR rl.Vector2
 	LegDist float32
@@ -93,6 +94,20 @@ func (p *Player) MovementTick(cam rl.Camera3D) {
 	p.Pos.X += p.Vel.X * dt
 	p.Pos.Y += p.Vel.Y * dt
 	p.Pos.Z += p.Vel.Z * dt
+
+
+	if rl.IsKeyPressed(rl.KeyE) {
+		p.EnvVel.X += 5
+	}
+
+	p.EnvVel = rl.Vector3Subtract(p.EnvVel,rl.NewVector3(p.EnvVel.X*1.5*dt,p.EnvVel.Y*1.5*dt,p.EnvVel.Z*1.5*dt))
+
+	p.Pos.X += p.EnvVel.X * dt
+	p.Pos.Y += p.EnvVel.Y * dt
+	p.Pos.Z += p.EnvVel.Z * dt
+
+	if rl.Vector3Length(p.EnvVel) < 0.05 {p.EnvVel = rl.NewVector3(0,0,0)}
+
 
 	p.LegDist = max(rl.Vector2Length(rl.NewVector2(p.Vel.X,p.Vel.Z))/10,0.5)
 

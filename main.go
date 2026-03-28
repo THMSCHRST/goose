@@ -52,13 +52,6 @@ func main() {
 
 	var dust []particle.Particle
 
-	grassTexture := rl.LoadTexture("grass_blade.png")
-	defer rl.UnloadTexture(grassTexture)
-
-	grassBlades := particle.GenerateGrass(500, 500, 0.2)
-
-	rl.EnableDepthTest()
-
     for !rl.WindowShouldClose() {
 
 		if rl.Vector3Length(p.Vel) > 0.75 {
@@ -66,14 +59,6 @@ func main() {
 				dust = append(dust, particle.NewParticle(p.Pos,rl.Vector3Add(rl.Vector3Scale(p.Vel,-0.3),rl.NewVector3(0,3,0)),-10,3))
 			}
 		}
-
-		/*
-		sort.Slice(grassBlades, func(i, j int) bool {
-			di := rl.Vector3DistanceSqr(camera.Position, grassBlades[i].Pos)
-			dj := rl.Vector3DistanceSqr(camera.Position, grassBlades[j].Pos)
-			return di > dj // far to near
-		})
-		*/
 
         mouseDelta := rl.GetMouseDelta()
         yaw += float64(mouseDelta.X) * mouseSensitivity
@@ -108,16 +93,6 @@ func main() {
 
 		if debug {rl.DrawGrid(100, 1.0)}
 		rl.DrawModel(floor,rl.NewVector3(0,0,0),1,rl.White)
-
-		rl.BeginBlendMode(rl.BlendAlpha)
-
-		for _, blade := range grassBlades {
-			if rl.Vector3DistanceSqr(camera.Position,blade.Pos) < 100 {
-				rl.DrawBillboard(camera, grassTexture, blade.Pos, blade.Scale, blade.Color)
-			}
-		}
-
-		rl.EndBlendMode()
 
 		newDust := []particle.Particle{}
 
