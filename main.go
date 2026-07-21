@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"goose/gen"
-	"goose/particle"
 	player "goose/player" // player
 	"math"
 	"math/rand/v2"
@@ -12,7 +11,7 @@ import (
 )
 
 func main() {
-    rl.InitWindow(800, 450, "goose")
+    rl.InitWindow(int32(rl.GetScreenWidth()), int32(rl.GetScreenHeight()), "goose")
     defer rl.CloseWindow()
 
     camera := rl.Camera3D{
@@ -50,15 +49,15 @@ func main() {
 	floor := rl.LoadModelFromMesh(rl.GenMeshPlane(100,100,1,1))
 	floor.Materials = &grassFloor
 
-	var dust []particle.Particle
+	//var dust []particle.Particle
 
     for !rl.WindowShouldClose() {
-
+		/*
 		if rl.Vector3Length(p.Vel) > 0.75 {
 			if rand.Float32() < 4.5*rl.GetFrameTime() {
 				dust = append(dust, particle.NewParticle(p.Pos,rl.Vector3Add(rl.Vector3Scale(p.Vel,-0.3),rl.NewVector3(0,3,0)),-10,3))
 			}
-		}
+		}*/
 
         mouseDelta := rl.GetMouseDelta()
         yaw += float64(mouseDelta.X) * mouseSensitivity
@@ -94,6 +93,7 @@ func main() {
 		if debug {rl.DrawGrid(100, 1.0)}
 		rl.DrawModel(floor,rl.NewVector3(0,0,0),1,rl.White)
 
+		/*
 		newDust := []particle.Particle{}
 
 		for _,p := range dust {
@@ -104,6 +104,7 @@ func main() {
 			}
 		}
 		dust = newDust
+		*/
 
 		rl.EndMode3D()
 
